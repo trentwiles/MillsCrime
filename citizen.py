@@ -28,6 +28,7 @@ def determineIcon(text):
     if "stolen" in text:
         return FA_ICONS["robbery"]
     return FA_ICONS["other"]
+
 def getReports(timeRange):
     # timeRange is in hours
     timeRange = timeRange * 3600
