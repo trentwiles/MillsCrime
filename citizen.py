@@ -13,9 +13,13 @@ FA_ICONS = {"stabbing": '<i class="fa-solid fa-gun fa-fade"></i>',
             "fire": '<i class="fa-solid fa-fire fa-fade"></i>',
             "police": '<i class="fa-solid fa-shield-halved fa-fade"></i>',
             "other": '<i class="fa-solid fa-circle-exclamation fa-fade"></i>'}
+
+def getRanges():
+    return {"upperLon": float(UPPER_LON), "upperLat": float(UPPER_LAT), "lowerLat": float(LOWER_LAT), "lowerLon": float(LOWER_LON)}
+
 def determineIcon(text):
     text = text.lower()
-    if "gunshot" in text or "stabbing" in text or "assault" in text:
+    if "gunshot" in text or "stabbing" in text or "assault" in text or "firearm":
         return FA_ICONS["stabbing"]
     if "fire" in text or "smoke" in text:
         return FA_ICONS["fire"]
@@ -25,7 +29,7 @@ def determineIcon(text):
         return FA_ICONS["armed_robbery"]
     if "police" in text:
         return FA_ICONS["police"]
-    if "stolen" in text:
+    if "stolen" in text or "robbery" in text:
         return FA_ICONS["robbery"]
     return FA_ICONS["other"]
 
@@ -40,9 +44,9 @@ def getReports(timeRange):
             print(incident["raw"])
             print(determineIcon(incident["raw"]))
 
-getReports(6)
-print("================")
-getReports(12)
-print("================")
-getReports(24)
-print("================")
+# getReports(6)
+# print("================")
+# getReports(12)
+# print("================")
+# getReports(24)
+# print("================")
