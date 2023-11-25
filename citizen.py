@@ -42,7 +42,7 @@ def getReports(timeRange):
     for incident in r.json()['results']:
         age = round(time.time() - incident["cs"]/1000)
         if timeRange >= age:
-            dataToSend = {"timestamp": incident["cs"]/1000, "cordinates": [incident["latitude"], incident["longitude"]], "details": incident["raw"], "icon": determineIcon(incident["raw"])}
+            dataToSend = {"timestamp": incident["cs"]/1000, "cordinates": [incident["latitude"], incident["longitude"]], "details": incident["raw"], "address": incident["location"], "icon": determineIcon(incident["raw"])}
             dataHolder.append(dataToSend)
     
     return dataHolder
