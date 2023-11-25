@@ -35,9 +35,6 @@ def getOpenData(timeRange):
                     cordinates = row[8][len("POINT ("):][:-1].split(" ")
                     cordinates[0] = float(cordinates[0])
                     cordinates[1] = float(cordinates[1])
-                    dataToSave = {"timestamp": epoch_time, "cordinates": cordinates, "details": row[3], "address": row[5], "icon": citizen.determineIcon(row[3])}
+                    dataToSave = {"timestamp": epoch_time, "cordinates": [cordinates[1], cordinates[0]], "details": row[3], "address": row[5], "icon": citizen.determineIcon(row[3])}
                     dataHolder.append(dataToSave)
     return dataHolder
-
-
-print(getOpenData(7 * 24))

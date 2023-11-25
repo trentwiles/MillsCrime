@@ -34,6 +34,7 @@ def determineIcon(text):
     return FA_ICONS["other"]
 
 def getReports(timeRange):
+    dataHolder = []
     # timeRange is in hours
     timeRange = timeRange * 3600
     #print(timeRange)
@@ -41,12 +42,7 @@ def getReports(timeRange):
     for incident in r.json()['results']:
         age = round(time.time() - incident["cs"]/1000)
         if timeRange >= age:
-            print(incident["raw"])
-            print(determineIcon(incident["raw"]))
-
-# getReports(6)
-# print("================")
-# getReports(12)
-# print("================")
-# getReports(24)
-# print("================")
+            dataToSend = {"timestamp": incident["cs"]/1000, "cordinates": [incident["latitude"], incident["longitude"]], "details": incident["raw"], "icon": determineIcon(incident["raw"])}
+            dataHolder.append(dataToSend)
+    
+    return dataHolder
