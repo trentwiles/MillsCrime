@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 import json
 import citizen
 import opd
@@ -7,7 +7,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return Response(json.dumps({"message": "OK"}), content_type="application/json")
+    return render_template("index.html", hours = 6)
+
+@app.route('/<time>')
+def hours(time):
+    return render_template("index.html", hours=time)
+
 
 @app.route('/api/v1/all/<int:hrs>')
 def all(hrs):
