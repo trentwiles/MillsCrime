@@ -16,18 +16,50 @@
             height: 400px;
         }
     </style>
+    <select name="time" id="time">
+        <option value="6">Last 6 hours</option>
+        <option value="12">Last 12 hours</option>
+        <option value="24">Last 24 hours</option>
+        <option value="week">Last Week</option>
+      </select>
     <script>
         var map = L.map('map').setView([37.781298, -122.184105], 14);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-        $.get("/api/v1/all/{{hours}}", function (data) {
-            for (var i = 0; i < data["citizen"].length; i++) {
-                L.marker(data["citizen"][i]["cordinates"]).addTo(map).bindPopup(`<b>${data["citizen"][i]["details"]}</b><br>Address: ${data["citizen"][i]["address"]}<br>Source: Citizen`)
-            }
-            for (var i = 0; i < data["oaklandPolice"].length; i++) {
-                L.marker(data["oaklandPolice"][i]["cordinates"]).addTo(map).bindPopup(`<b>${data["oaklandPolice"][i]["details"]}</b><br>Address: ${data["oaklandPolice"][i]["address"]}<br>Source: Oakland Police`)
+        function getData(hours){
+            // nuke everything first, if there is anything
+            map.eachLayer(function (layer) {
+                map.removeLayer(layer);
+            });
+            $.get("/api/v1/all/" + hours, function (data) {
+                for (var i = 0; i < data["citizen"].length; i++) {
+                    L.marker(data["citizen"][i]["cordinates"]).addTo(map).bindPopup(`<b>${data["citizen"][i]["details"]}</b><br>Address: ${data["citizen"][i]["address"]}<br>Source: Citizen`)
+                }
+                for (var i = 0; i < data["oaklandPolice"].length; i++) {
+                    L.marker(data["oaklandPolice"][i]["cordinates"]).addTo(map).bindPopup(`<b>${data["oaklandPolice"][i]["details"]}</b><br>Address: ${data["oaklandPolice"][i]["address"]}<br>Source: Oakland Police`)
+                }
+            });
+        }
+        getData(6)
+        // end map code
+
+        var selector = document.getElementById('time');
+        selector.addEventListener('change', function() {
+            var chosen = selector.value;
+            switch(chosen) {
+                case "6":
+                    getData(6)
+                    break;
+                case "12":
+                    getData(12)
+                    break;
+                case "24":
+                    getData(24)
+                    break;
+                case "week":
+                    getData(7 * 24)
             }
         });
     </script>
